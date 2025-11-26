@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>게시글 상세보기</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #eef2f7;
+        color: #333;
+      }
+
+      /* 네비게이션 바 (main.html과 동일) */
+      .navbar {
+        background: #4a90e2;
+        color: #fff;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .nav-left {
+        display: flex;
+        gap: 30px;
+      }
+      .nav-left a {
+        color: white;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      .nav-left a:hover {
+        color: #c9e2ff;
+      }
+
+      .logout-btn {
+        color: white;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 5px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        transition: background 0.3s ease;
+      }
+      .logout-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* 상세 페이지 컨테이너 */
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #4a90e2;
+        margin-bottom: 20px;
+        border-left: 4px solid #4a90e2;
+        padding-left: 10px;
+      }
+
+      .content {
+        font-size: 17px;
+        line-height: 1.7;
+        color: #555;
+        margin-bottom: 40px;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+      }
+      .edit-btn {
+        background-color: #4a90e2;
+      }
+      .delete-btn {
+        background-color: #e25050;
+      }
+      .edit-btn:hover {
+        background-color: #3b79c2;
+      }
+      .delete-btn:hover {
+        background-color: #cc3d3d;
+      }
+
+      .container {
+        max-width: 900px; /* 폭 넓게 */
+        margin: 60px auto; /* 위아래 여백 늘림 */
+        padding: 30px;
+      }
+
+      .post-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); /* 그림자 조금 더 깊게 */
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .post-title {
+        font-size: 32px; /* 글씨 키움 */
+        font-weight: bold;
+        color: #4a90e2;
+        border-bottom: 3px solid #4a90e2; /* 구분선 두껍게 */
+        padding-bottom: 10px;
+      }
+
+      .post-content {
+        font-size: 18px; /* 글씨 키움 */
+        color: #555;
+        line-height: 1.6;
+        white-space: pre-line; /* 줄바꿈 유지 */
+      }
+
+      /* 버튼 그룹 스타일 */
+      .btn-group {
+        margin-top: 25px;
+        display: flex;
+        gap: 15px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .edit-btn {
+        background: #50c878;
+        color: white;
+      }
+
+      .delete-btn {
+        background: #e25d5d;
+        color: white;
+      }
+
+      .edit-btn:hover {
+        background: #3eb565;
+      }
+
+      .delete-btn:hover {
+        background: #d14b4b;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <div class="navbar">
+        <div class="nav-left">
+          <a href="main.html">게시판</a>
+          <a href="write.html">작성하기</a>
+        </div>
+
+        <div class="logout-btn" id="logoutBtn">로그아웃</div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div id="postTitle" class="title post-title"></div>
+      <div id="postContent" class="content post-content"></div>
+
+      <div class="btn-group">
+        <button class="btn edit-btn" id="editBtn">수정하기</button>
+        <button class="btn delete-btn" id="deleteBtn">삭제하기</button>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await fetch("http://127.0.0.1:8080/auth/logout", {
+              method: "POST",
+            });
+            if (res.ok) {
+              localStorage.removeItem("token");
+              window.location.href = "login.html";
+            }
+          } catch (err) {
+            alert("로그아웃 실패");
+          }
+        });
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get("id");
+
+      const token = localStorage.getItem("token");
+
+      // JWT 디코딩 함수
+      function decodeToken(token) {
+        try {
+          const payload = token.split(".")[1];
+          return JSON.parse(atob(payload));
+        } catch (e) {
+          return null;
+        }
+      }
+
+      const myInfo = token ? decodeToken(token) : null;
+
+      async function loadDetail() {
+        try {
+          const res = await fetch(`http://127.0.0.1:8080/posts/${postId}`);
+          const post = await res.json();
+
+          document.getElementById("postTitle").textContent = post.textTitle;
+          document.getElementById("postContent").textContent = post.text;
+
+          // 🔥 로그인한 사람과 게시글 작성자 비교
+          if (myInfo.userid !== postId) {
+            document.getElementById("editBtn").style.display = "none";
+            document.getElementById("deleteBtn").style.display = "none";
+          }
+        } catch (err) {
+          console.error(err);
+          alert("게시글을 불러오지 못했습니다.");
+        }
+      }
+
+      // 삭제하기
+      document
+        .getElementById("deleteBtn")
+        .addEventListener("click", async () => {
+          if (!confirm("정말 삭제하시겠습니까?")) return;
+
+          try {
+            const res = await fetch(`http://127.0.0.1:8080/posts/${postId}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (res.ok) {
+              alert("삭제되었습니다.");
+              window.location.href = "main.html";
+            } else {
+              alert("삭제 실패!");
+            }
+          } catch (err) {
+            alert("서버 오류");
+          }
+        });
+
+      // 수정하기
+      document.getElementById("editBtn").addEventListener("click", () => {
+        window.location.href = `write.html?mode=edit&id=${postId}`;
+      });
+      console.log("URL id:", postId);
+      console.log("Local token:", localStorage.getItem("token"));
+      console.log("Decoded token:", myInfo);
+
+      loadDetail();
+    </script>
+  </body>
+</html>

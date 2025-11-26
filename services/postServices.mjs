@@ -38,3 +38,20 @@ export async function getPosts() {
     return { success: false, message: "게시글 조회 중 서버 오류 발생!" };
   }
 }
+
+// 하나의 게시글 가져오기
+export async function getPostById(postId) {
+  try {
+    const sql =
+      "select p.id, p.textTitle, p.text, u.userid, p.createAt from posts as p join users as u on p.useridx = u.idx where u.userid = ?";
+    const [rows] = await db.query(sql, [postId]);
+
+    if (rows.length == 0) {
+      return { success: false, message: "게시글을 찾을 수 없습니다!" };
+    }
+    return { success: true, post: rows[0] };
+  } catch (err) {
+    console.error("게시글 단일 조회 중 오류:", err);
+    return { success: false, message: "서버 오류가 발생했습니다!" };
+  }
+}

@@ -27,3 +27,16 @@ export const allPosts = async (req, res) => {
     return res.status(500).json({ message: result.message });
   }
 };
+
+// 하나의 포스트 가져오기 export
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await services.getPostById(id);
+
+  if (!result.success) {
+    return res.status(404).json({ message: result.message });
+  }
+
+  return res.status(200).json(result.post);
+};

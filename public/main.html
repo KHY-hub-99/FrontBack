@@ -114,6 +114,21 @@
         background: #3eb565;
         transform: translateY(-2px);
       }
+
+      .detail-btn {
+        margin-top: 15px;
+        padding: 8px 16px;
+        background: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        float: right;
+      }
+
+      .detail-btn:hover {
+        background: #3b78c2;
+      }
     </style>
   </head>
 
@@ -216,6 +231,7 @@
               </span>
             </div>
             <div class="post-content">${post.text}</div>
+            <button class="detail-btn" onclick="location.href='detail.html?id=${post.userid}'">자세히보기</button>
             `;
               postListContainer.appendChild(postElement);
             });
