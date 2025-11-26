@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>글 작성 - 게시판</title>
+    <style>
+      /* --- 메인 페이지와 통일된 기본 스타일 --- */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #eef2f7; /* 은은한 밝은 배경 */
+        color: #333;
+      }
+
+      /* 상단 네비게이션 바 */
+      .navbar {
+        background: #4a90e2; /* 산뜻한 블루 계열 */
+        color: #fff;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .nav-left {
+        display: flex;
+        gap: 30px;
+      }
+      .nav-left a {
+        color: white;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      .nav-left a:hover {
+        color: #c9e2ff;
+      }
+      .logout-btn {
+        color: white;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 5px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        transition: background 0.3s ease;
+      }
+      .logout-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* --- 작성 폼 스타일 --- */
+      .container {
+        max-width: 700px; /* 작성 폼 크기 */
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      h2 {
+        text-align: center;
+        color: #4a90e2;
+        margin-bottom: 30px;
+        font-weight: 600;
+      }
+
+      .write-form label {
+        display: block;
+        font-size: 16px;
+        font-weight: 500;
+        color: #444;
+        margin-bottom: 8px;
+        margin-top: 15px;
+      }
+
+      .write-form input[type="text"],
+      .write-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box; /* 패딩이 너비를 초과하지 않도록 설정 */
+        font-size: 15px;
+        transition: border-color 0.3s;
+      }
+
+      .write-form input[type="text"]:focus,
+      .write-form textarea:focus {
+        border-color: #4a90e2; /* 포커스 시 색상 변경 */
+        outline: none;
+      }
+
+      .write-form textarea {
+        resize: vertical; /* 수직으로만 크기 조절 가능 */
+        min-height: 250px; /* 최소 높이 */
+      }
+
+      /* 작성/취소 버튼 그룹 */
+      .btn-group {
+        text-align: right;
+        margin-top: 30px;
+      }
+
+      .submit-btn,
+      .cancel-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        margin-left: 10px;
+      }
+
+      .submit-btn {
+        background: #50c878; /* 메인 페이지의 작성 버튼과 동일한 초록색 */
+        color: #fff;
+      }
+
+      .submit-btn:hover {
+        background: #3eb565;
+      }
+
+      .cancel-btn {
+        background: #ccc;
+        color: #333;
+      }
+
+      .cancel-btn:hover {
+        background: #bbb;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <div class="navbar">
+        <div class="nav-left">
+          <a href="main.html">게시판</a>
+          <a href="write.html">작성하기</a>
+        </div>
+
+        <div class="logout-btn" id="logoutBtn">로그아웃</div>
+      </div>
+    </header>
+    <div class="container">
+      <h2>새 게시글 작성하기</h2>
+      <form class="write-form" action="[서버의 글쓰기 처리 경로]" method="POST">
+        <div>
+          <label for="texttTitle">제목</label>
+          <input
+            type="text"
+            id="texttTitle"
+            name="texttTitle"
+            placeholder="게시글 제목을 입력하세요."
+            required
+          />
+        </div>
+
+        <div>
+          <label for="text">내용</label>
+          <textarea
+            id="text"
+            name="text"
+            placeholder="내용을 입력하세요."
+            required
+          ></textarea>
+        </div>
+
+        <div class="btn-group">
+          <button
+            type="button"
+            class="cancel-btn"
+            onclick="location.href='main.html'"
+          >
+            취소
+          </button>
+          <button type="submit" class="submit-btn">작성</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await fetch("/auth/logout", { method: "POST" });
+            if (res.ok) {
+              document.getElementById("header").remove();
+              localStorage.removeItem("token");
+              window.location.href = "login.html";
+            } else {
+              alert("로그아웃 실패");
+            }
+          } catch (err) {
+            console.error(err);
+            alert("서버 오류");
+          }
+        });
+    </script>
+  </body>
+</html>

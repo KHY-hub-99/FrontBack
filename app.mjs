@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import * as AR from "./router/authRouter.mjs";
+// import cors from "cors";
 
 const app = express();
 const port = 8080;
@@ -12,11 +13,20 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(cors());
 
-// 기능별 라우트 연결
-
+/* 기능별 라우트 연결 */
 // 회원가입
 app.post("/auth/signup", AR.signup);
+
+// 로그인
+app.post("/auth/login", AR.login);
+
+// 로그아웃
+app.post("/auth/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "로그아웃 완료" });
+});
 
 // 루트 접속 시 login.html로 리다이렉트
 app.get("/", (req, res) => {

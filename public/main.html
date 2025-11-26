@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>메인 페이지 - 게시판</title>
+    <style>
+      /* 기본 스타일 재설정 및 폰트 */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #eef2f7; /* 은은한 밝은 배경 */
+        color: #333;
+      }
+
+      /* 상단 네비게이션 바 */
+      .navbar {
+        background: #4a90e2; /* 산뜻한 블루 계열 */
+        color: #fff;
+        padding: 18px 40px; /* 패딩 증가 */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+      }
+      .nav-left {
+        display: flex;
+        gap: 30px; /* 간격 증가 */
+      }
+      .nav-left a {
+        color: white;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 500;
+        transition: color 0.3s ease; /* 호버 효과 */
+      }
+      .nav-left a:hover {
+        color: #c9e2ff;
+      }
+      .logout-btn {
+        color: white;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 5px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리 추가 */
+        border-radius: 4px;
+        transition: background 0.3s ease;
+      }
+      .logout-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* 게시판 컨테이너 */
+      .container {
+        max-width: 800px; /* 컨테이너 폭 증가 */
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 더 부드럽고 깊은 그림자 */
+      }
+
+      /* 개별 게시글 스타일 */
+      .post {
+        margin-bottom: 25px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #fcfcfc;
+        transition: box-shadow 0.3s ease, transform 0.2s ease;
+      }
+      .post:hover {
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2); /* 호버 시 강조 */
+        transform: translateY(-2px); /* 살짝 위로 이동 */
+      }
+
+      .post-title {
+        font-size: 20px;
+        font-weight: 700; /* 더 굵게 */
+        color: #4a90e2; /* 타이틀 색상 변경 */
+        margin-bottom: 8px;
+        border-left: 4px solid #4a90e2; /* 강조 선 */
+        padding-left: 10px;
+      }
+
+      .post-content {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #555;
+      }
+
+      /* 하단 작성 버튼 래퍼 */
+      .write-btn-wrapper {
+        text-align: center;
+        margin-top: 50px;
+        margin-bottom: 50px; /* 하단 여백 추가 */
+      }
+
+      /* 작성 버튼 */
+      .write-btn {
+        padding: 12px 25px; /* 패딩 증가 */
+        font-size: 17px;
+        font-weight: bold;
+        background: #50c878; /* 눈에 띄는 초록색 */
+        color: #fff;
+        border: none;
+        border-radius: 25px; /* 둥근 버튼 */
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(80, 200, 120, 0.4);
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .write-btn:hover {
+        background: #3eb565;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header id="header">
+      <div class="navbar">
+        <div class="nav-left">
+          <a href="main.html">게시판</a>
+          <a href="write.html">작성하기</a>
+        </div>
+
+        <div class="logout-btn" id="logoutBtn">로그아웃</div>
+      </div>
+    </header>
+    <div class="container" id="postList">
+      <div class="post">
+        <div class="post-title">📢 새 디자인 적용 예시 게시글</div>
+        <div class="post-content">
+          산뜻한 파란색 네비게이션과 부드러운 배경색을 적용했습니다. 게시글
+          박스에 미묘한 그림자를 넣어 입체감을 주었고, 마우스 오버 시 강조
+          효과가 나타납니다.
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-title">디자인 개선 사항 요약</div>
+        <div class="post-content">
+          <ul>
+            <li>
+              **색상:** 네비게이션은 시원한 **블루** 계열, 버튼은 눈에 띄는
+              **그린** 계열로 변경했습니다.
+            </li>
+            <li>
+              **레이아웃:** 게시글 컨테이너 폭을 넓히고, 각 게시글에 경계선과
+              배경을 추가하여 구분했습니다.
+            </li>
+            <li>
+              **디테일:** 제목 왼쪽에 강조 라인을 넣고, 버튼은 둥글게
+              처리했습니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="write-btn-wrapper">
+      <button class="write-btn" onclick="location.href='write.html'">
+        📝 새 글 작성하기
+      </button>
+    </div>
+    <script>
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await fetch("/auth/logout", { method: "POST" });
+            if (res.ok) {
+              document.getElementById("header").remove();
+              localStorage.removeItem("token");
+              window.location.href = "login.html";
+            } else {
+              alert("로그아웃 실패");
+            }
+          } catch (err) {
+            console.error(err);
+            alert("서버 오류");
+          }
+        });
+    </script>
+  </body>
+</html>
