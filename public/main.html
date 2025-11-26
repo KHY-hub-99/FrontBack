@@ -181,6 +181,45 @@
             alert("서버 오류");
           }
         });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const postListContainer = document.getElementById("postList");
+
+        async function loadPosts() {
+          try {
+            const res = await fetch("/posts");
+            if (!res) {
+              throw new Error("게시글 업로드 실패!");
+            }
+            const data = await res.json();
+            const posts = data.posts;
+            postListContainer.innerHTML = "";
+            if (posts.length === 0) {
+              postListContainer.innerHTML =
+                '<div style="text-align: center; color: #888;">게시글이 없습니다.</div>';
+              return;
+            }
+            posts.forEach((post) => {
+              const postElement = document.createElement("div");
+              postElement.className = "post";
+              const date = new Date(post.createAt).toLocaleDateString("ko-KR");
+              postElement.innerHTML = `
+            <div class="post-title">${post.textTitle}
+              <span style="font-size: 14px; color: #aaa; font-weight: normal; margin-left: 10px;">
+                by ${post.userid} | ${date}
+              </span>
+            </div>
+            <div class="post-content">${post.text}</div>
+            `;
+              postListContainer.appendChild(postElement);
+            });
+          } catch (err) {
+            console.error("게시글 로드 오류:", error);
+            postListContainer.innerHTML = `<div style="color: red; text-align: center;">${error.message}</div>`;
+          }
+        }
+        loadPosts();
+      });
     </script>
   </body>
 </html>

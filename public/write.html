@@ -149,13 +149,18 @@
     </header>
     <div class="container">
       <h2>새 게시글 작성하기</h2>
-      <form class="write-form" action="[서버의 글쓰기 처리 경로]" method="POST">
+      <form
+        id="writeForm"
+        class="write-form"
+        action="[서버의 글쓰기 처리 경로]"
+        method="POST"
+      >
         <div>
           <label for="texttTitle">제목</label>
           <input
             type="text"
-            id="texttTitle"
-            name="texttTitle"
+            id="textTitle"
+            name="textTitle"
             placeholder="게시글 제목을 입력하세요."
             required
           />
@@ -182,6 +187,7 @@
           <button type="submit" class="submit-btn">작성</button>
         </div>
       </form>
+      <p id="message"></p>
     </div>
     <script>
       document
@@ -201,6 +207,48 @@
             alert("서버 오류");
           }
         });
+
+      const form = document.getElementById("writeForm");
+      const message = document.getElementById("message");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const textTitle = document.getElementById("textTitle").value;
+        const text = document.getElementById("text").value;
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          message.textContent = "로그인 상태가 아닙니다.";
+          message.style.color = "red";
+          return;
+        }
+
+        try {
+          const res = await fetch("/post/write", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ textTitle, text }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            message.textContent = data.message;
+            message.style.color = "green";
+
+            setTimeout(() => {
+              window.location.href = "main.html";
+            }, 1000);
+          } else {
+            message.textContent = data.message;
+            message.style.color = "red";
+          }
+        } catch (err) {
+          console.error(err);
+          message.textContent = "서버 오류";
+          message.style.color = "red";
+        }
+      });
     </script>
   </body>
 </html>

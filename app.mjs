@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import * as AR from "./router/authRouter.mjs";
+import * as PR from "./router/postRouter.mjs";
+import { authenticateToken } from "./middleware/middleware.mjs";
 // import cors from "cors";
 
 const app = express();
@@ -27,6 +29,12 @@ app.post("/auth/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "로그아웃 완료" });
 });
+
+// 포스트 작성
+app.post("/post/write", authenticateToken, PR.write);
+
+// 모든 포스트 보기
+app.get("/posts", PR.allPosts);
 
 // 루트 접속 시 login.html로 리다이렉트
 app.get("/", (req, res) => {
