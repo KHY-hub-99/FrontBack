@@ -194,7 +194,9 @@
         .getElementById("logoutBtn")
         .addEventListener("click", async () => {
           try {
-            const res = await fetch("/auth/logout", { method: "POST" });
+            const res = await fetch("http://127.0.0.1:8080/auth/logout", {
+              method: "POST",
+            });
             if (res.ok) {
               document.getElementById("header").remove();
               localStorage.removeItem("token");
@@ -223,7 +225,7 @@
         }
 
         try {
-          const res = await fetch("/post/write", {
+          const res = await fetch("http://127.0.0.1:8080/post/write", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

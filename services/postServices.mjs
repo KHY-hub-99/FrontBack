@@ -32,9 +32,6 @@ export async function getPosts() {
     const sql =
       "select p.id, p.textTitle, p.text, u.userid, p.createAt from posts as p join users as u on p.useridx = u.idx";
     const [rows] = await db.query(sql);
-    if (rows.length === 0) {
-      return { success: false, message: "작성한 게시글이 없습니다!" };
-    }
     return { success: true, posts: rows };
   } catch (err) {
     console.error("게시글 조회 중 오류:", err);

@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import * as AR from "./router/authRouter.mjs";
 import * as PR from "./router/postRouter.mjs";
 import { authenticateToken } from "./middleware/middleware.mjs";
-// import cors from "cors";
+import cors from "cors";
 
 const app = express();
 const port = 8080;
@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cors());
+app.use(cors());
 
 /* 기능별 라우트 연결 */
 // 회원가입
