@@ -200,29 +200,40 @@
               method: "POST",
             });
             if (res.ok) {
+              document.getElementById("header").remove();
               localStorage.removeItem("token");
               window.location.href = "login.html";
+            } else {
+              alert("로그아웃 실패");
             }
           } catch (err) {
-            alert("로그아웃 실패");
+            console.error(err);
+            alert("서버 오류");
           }
         });
 
       const urlParams = new URLSearchParams(window.location.search);
-      const postId = urlParams.get("id");
-
+      const postId = urlParams.get("id"); // URL: detail.html?id=10
+      const postUserId = urlParams.get("userid");
       const token = localStorage.getItem("token");
 
       // JWT 디코딩 함수
       function decodeToken(token) {
         try {
           const payload = token.split(".")[1];
-          return JSON.parse(atob(payload));
+          const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+          const decoded = decodeURIComponent(
+            atob(base64)
+              .split("")
+              .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+              .join("")
+          );
+          return JSON.parse(decoded);
         } catch (e) {
+          console.log("decode error:", e);
           return null;
         }
       }
-
       const myInfo = token ? decodeToken(token) : null;
 
       async function loadDetail() {
@@ -234,7 +245,7 @@
           document.getElementById("postContent").textContent = post.text;
 
           // 🔥 로그인한 사람과 게시글 작성자 비교
-          if (myInfo.userid !== postId) {
+          if (!myInfo || myInfo.userid !== postUserId) {
             document.getElementById("editBtn").style.display = "none";
             document.getElementById("deleteBtn").style.display = "none";
           }
@@ -271,7 +282,7 @@
 
       // 수정하기
       document.getElementById("editBtn").addEventListener("click", () => {
-        window.location.href = `write.html?mode=edit&id=${postId}`;
+        window.location.href = `update.html?id=${postId}&userid=${postUserId}`;
       });
       console.log("URL id:", postId);
       console.log("Local token:", localStorage.getItem("token"));

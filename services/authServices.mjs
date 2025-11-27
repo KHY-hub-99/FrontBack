@@ -33,7 +33,7 @@ export async function loginUser({ userid, password }) {
   }
   try {
     const [rows] = await db.query(
-      "select userid, password from users where userid = ?",
+      "select idx, userid, password from users where userid = ?",
       [userid]
     );
     const user = rows[0];
@@ -44,9 +44,13 @@ export async function loginUser({ userid, password }) {
     if (!isMatch) {
       return { success: false, message: "비밀번호가 일치하지 않습니다!" };
     }
-    const token = jwt.sign({ userid: user.userid }, "asdasdw!@#", {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userid: user.userid, idx: user.idx },
+      "asdasdw!@#",
+      {
+        expiresIn: "1d",
+      }
+    );
     return { success: true, message: "로그인 되었습니다!", token };
   } catch (err) {
     console.error(err);

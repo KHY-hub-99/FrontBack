@@ -40,3 +40,22 @@ export const getPost = async (req, res) => {
 
   return res.status(200).json(result.post);
 };
+
+// 게시글 수정하기 export
+export const update = async (req, res) => {
+  const postId = req.params.id;
+  const verifyUserid = req.user.userid;
+  const { textTitle, text } = req.body;
+  const result = await services.updatePost({
+    postId,
+    textTitle,
+    text,
+    userid: verifyUserid,
+  });
+
+  if (result.success) {
+    return res.status(201).json({ message: result.message });
+  } else {
+    return res.status(400).json({ message: result.message });
+  }
+};

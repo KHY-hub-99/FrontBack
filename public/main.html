@@ -231,7 +231,7 @@
               </span>
             </div>
             <div class="post-content">${post.text}</div>
-            <button class="detail-btn" onclick="location.href='detail.html?id=${post.userid}'">자세히보기</button>
+            <button class="detail-btn" onclick="location.href='detail.html?id=${post.id}&userid=${post.userid}'">자세히보기</button>
             `;
               postListContainer.appendChild(postElement);
             });

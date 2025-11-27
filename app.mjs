@@ -40,7 +40,7 @@ app.get("/posts", PR.allPosts);
 app.get("/posts/:id", PR.getPost);
 
 // // 수정하기
-// app.put("/posts/:id", authenticateToken, PR.updatePost);
+app.put("/posts/:id", authenticateToken, PR.update);
 
 // // 삭제하기
 // app.delete("/posts/:id", authenticateToken, PR.deletePost);
