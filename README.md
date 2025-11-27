@@ -62,6 +62,12 @@
 npm install express jsonwebtoken bcrypt mysql2 cors
 ```
 
+packge.json이 있기 때문에 npm i로 한번에 설치
+
+```bash
+npm i
+```
+
 ### 2. 환경 설정
 
 DB 설정: `db/database.mjs` 파일에 MySQL 접속 정보를 설정해야 합니다.
