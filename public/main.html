@@ -129,6 +129,28 @@
       .detail-btn:hover {
         background: #3b78c2;
       }
+      .search-wrapper {
+        width: 700px;
+        margin: 15px auto;
+        display: flex;
+        gap: 10px;
+      }
+
+      #searchInput {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+
+      #searchBtn {
+        padding: 8px 15px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+      }
     </style>
   </head>
 
@@ -143,6 +165,10 @@
         <div class="logout-btn" id="logoutBtn">로그아웃</div>
       </div>
     </header>
+    <div class="search-wrapper">
+      <input type="text" id="searchInput" placeholder="제목 또는 작성자 검색" />
+      <button id="searchBtn">검색</button>
+    </div>
     <div class="container" id="postList">
       <div class="post">
         <div class="post-title">📢 새 디자인 적용 예시 게시글</div>
@@ -201,45 +227,68 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         const postListContainer = document.getElementById("postList");
+        const searchBtn = document.getElementById("searchBtn");
+        const searchInput = document.getElementById("searchInput");
+
+        let allPosts = [];
 
         async function loadPosts() {
           try {
-            const res = await fetch("http://127.0.0.1:8080/posts", {
-              method: "GET",
-            });
-            if (!res.ok) {
-              throw new Error(
-                `게시글 로드 실패 (상태: ${res.status} ${res.statusText})`
-              );
-            }
+            const res = await fetch("http://127.0.0.1:8080/posts");
             const data = await res.json();
-            const posts = data.posts;
-            postListContainer.innerHTML = "";
-            if (posts.length === 0) {
-              postListContainer.innerHTML =
-                '<div style="text-align: center; color: #888;">게시글이 없습니다.</div>';
-              return;
-            }
-            posts.forEach((post) => {
-              const postElement = document.createElement("div");
-              postElement.className = "post";
-              const date = new Date(post.createAt).toLocaleDateString("ko-KR");
-              postElement.innerHTML = `
-            <div class="post-title">${post.textTitle}
-              <span style="font-size: 14px; color: #aaa; font-weight: normal; margin-left: 10px;">
-                by ${post.userid} | ${date}
-              </span>
-            </div>
-            <div class="post-content">${post.text}</div>
-            <button class="detail-btn" onclick="location.href='detail.html?id=${post.id}&userid=${post.userid}'">자세히보기</button>
-            `;
-              postListContainer.appendChild(postElement);
-            });
+            allPosts = data.posts; // 전체 저장
+            renderPosts(allPosts);
           } catch (err) {
             console.error("게시글 로드 오류:", err);
-            postListContainer.innerHTML = `<div style="color: red; text-align: center;">${error.message}</div>`;
           }
         }
+
+        function renderPosts(posts) {
+          postListContainer.innerHTML = "";
+
+          if (posts.length === 0) {
+            postListContainer.innerHTML =
+              '<div style="text-align:center; color:#888;">검색 결과가 없습니다.</div>';
+            return;
+          }
+
+          posts.forEach((post) => {
+            const postElement = document.createElement("div");
+            postElement.className = "post";
+
+            const date = new Date(post.createAt).toLocaleDateString("ko-KR");
+
+            postElement.innerHTML = `
+        <div class="post-title">${post.textTitle}
+          <span style="font-size:14px; color:#aaa; margin-left:10px;">
+            by ${post.userid} | ${date}
+          </span>
+        </div>
+        <div class="post-content">${post.text}</div>
+        <button class="detail-btn" onclick="location.href='detail.html?id=${post.id}'">자세히보기</button>
+      `;
+
+            postListContainer.appendChild(postElement);
+          });
+        }
+
+        searchBtn.addEventListener("click", () => {
+          const keyword = searchInput.value.trim().toLowerCase();
+
+          const filtered = allPosts.filter((post) => {
+            return (
+              post.textTitle.toLowerCase().includes(keyword) ||
+              post.userid.toLowerCase().includes(keyword)
+            );
+          });
+
+          renderPosts(filtered);
+        });
+        searchInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            searchBtn.click();
+          }
+        });
         loadPosts();
       });
     </script>
