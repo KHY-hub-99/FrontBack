@@ -78,3 +78,25 @@ export const updatePost = async ({ postId, textTitle, text, userid }) => {
     return { success: false, message: "서버 오류" };
   }
 };
+
+// 게시글 삭제 로직
+export const deletePost = async ({ postId, userid }) => {
+  try {
+    const [result] = await db.query(
+      "delete from posts where id = ? and useridx = (select idx from users where userid = ?)",
+      [postId, userid]
+    );
+
+    if (result.affectedRows === 0) {
+      return {
+        success: false,
+        message: "삭제 권한이 없거나 게시글이 존재하지 않습니다.",
+      };
+    }
+
+    return { success: true, message: "게시글이 삭제되었습니다." };
+  } catch (err) {
+    console.error(err);
+    return { success: false, message: "서버 오류" };
+  }
+};

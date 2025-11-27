@@ -39,11 +39,11 @@ app.get("/posts", PR.allPosts);
 // 하나의 포스트 보기
 app.get("/posts/:id", PR.getPost);
 
-// // 수정하기
+// 수정하기
 app.put("/posts/:id", authenticateToken, PR.update);
 
-// // 삭제하기
-// app.delete("/posts/:id", authenticateToken, PR.deletePost);
+// 삭제하기
+app.delete("/posts/:id", authenticateToken, PR.remove);
 
 // 루트 접속 시 login.html로 리다이렉트
 app.get("/", (req, res) => {

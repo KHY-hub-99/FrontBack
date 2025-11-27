@@ -59,3 +59,20 @@ export const update = async (req, res) => {
     return res.status(400).json({ message: result.message });
   }
 };
+
+// 게시글 삭제 export
+export const remove = async (req, res) => {
+  const postId = req.params.id;
+  const verifyUserid = req.user.userid;
+
+  const result = await services.deletePost({
+    postId,
+    userid: verifyUserid,
+  });
+
+  if (result.success) {
+    return res.status(200).json({ message: result.message });
+  } else {
+    return res.status(400).json({ message: result.message });
+  }
+};
