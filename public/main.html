@@ -9,147 +9,220 @@
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background: #eef2f7; /* 은은한 밝은 배경 */
+        background: #f4f6f9; /* 밝고 현대적인 배경 */
         color: #333;
+        line-height: 1.6;
       }
 
       /* 상단 네비게이션 바 */
       .navbar {
-        background: #4a90e2; /* 산뜻한 블루 계열 */
+        background: #007bff; /* 전문적인 블루 */
         color: #fff;
-        padding: 18px 40px; /* 패딩 증가 */
+        padding: 15px 5%; /* % 단위 패딩 사용 */
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 깊은 그림자 */
       }
       .nav-left {
         display: flex;
-        gap: 30px; /* 간격 증가 */
+        gap: 30px;
       }
       .nav-left a {
         color: white;
         text-decoration: none;
-        font-size: 17px;
+        font-size: 16px;
         font-weight: 500;
-        transition: color 0.3s ease; /* 호버 효과 */
+        transition: color 0.3s ease;
       }
       .nav-left a:hover {
-        color: #c9e2ff;
+        color: #c0deff;
       }
       .logout-btn {
         color: white;
         cursor: pointer;
-        font-size: 15px;
-        padding: 5px 10px;
-        border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리 추가 */
-        border-radius: 4px;
-        transition: background 0.3s ease;
+        font-size: 14px;
+        padding: 8px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 6px;
+        transition: background 0.3s ease, border-color 0.3s ease;
       }
       .logout-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* 검색 박스 스타일 */
+      .search-wrapper {
+        max-width: 760px; /* 컨테이너와 비슷한 최대 폭 */
+        width: 90%;
+        margin: 30px auto;
+        display: flex;
+        gap: 10px;
+        background: #ffffff;
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        align-items: center;
+        transition: box-shadow 0.3s ease;
+      }
+      .search-wrapper:hover {
+        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+      }
+
+      /* 검색 input */
+      #searchInput {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1px solid #ddd;
+        outline: none;
+        font-size: 16px;
+        color: #333;
+        background: #f7f9fc;
+        border-radius: 8px;
+        transition: border-color 0.3s ease, background 0.3s ease;
+      }
+      #searchInput:focus {
+        border-color: #007bff;
+        background: #fff;
+      }
+
+      /* 검색 버튼 */
+      #searchBtn {
+        padding: 12px 22px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+      }
+      #searchBtn:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
+      }
+      #searchBtn:active {
+        transform: scale(0.98);
       }
 
       /* 게시판 컨테이너 */
       .container {
-        max-width: 800px; /* 컨테이너 폭 증가 */
+        max-width: 800px;
+        width: 90%; /* 일정한 비율 */
         margin: 40px auto;
         background: white;
         padding: 30px;
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 더 부드럽고 깊은 그림자 */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
       }
 
       /* 개별 게시글 스타일 */
       .post {
         margin-bottom: 25px;
         padding: 20px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #fcfcfc;
-        transition: box-shadow 0.3s ease, transform 0.2s ease;
+        border: 1px solid #e9ecef; /* 부드러운 테두리 */
+        border-radius: 10px;
+        background-color: #ffffff;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
       }
       .post:hover {
-        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2); /* 호버 시 강조 */
-        transform: translateY(-2px); /* 살짝 위로 이동 */
+        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.15); /* 호버 시 강조 */
+        transform: scale(1.01); /* 살짝 커지는 애니메이션 */
       }
 
       .post-title {
-        font-size: 20px;
-        font-weight: 700; /* 더 굵게 */
-        color: #4a90e2; /* 타이틀 색상 변경 */
-        margin-bottom: 8px;
-        border-left: 4px solid #4a90e2; /* 강조 선 */
-        padding-left: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 10px;
+        border-left: 5px solid #007bff;
+        padding-left: 15px;
+        line-height: 1.2;
       }
 
       .post-content {
         font-size: 15px;
-        line-height: 1.6;
+        line-height: 1.7;
         color: #555;
+        padding: 5px 0 10px 0;
       }
 
       /* 하단 작성 버튼 래퍼 */
       .write-btn-wrapper {
         text-align: center;
         margin-top: 50px;
-        margin-bottom: 50px; /* 하단 여백 추가 */
+        margin-bottom: 50px;
       }
 
       /* 작성 버튼 */
       .write-btn {
-        padding: 12px 25px; /* 패딩 증가 */
-        font-size: 17px;
+        padding: 15px 30px;
+        font-size: 18px;
         font-weight: bold;
-        background: #50c878; /* 눈에 띄는 초록색 */
+        background: #28a745; /* 산뜻한 초록색 */
         color: #fff;
         border: none;
-        border-radius: 25px; /* 둥근 버튼 */
+        border-radius: 30px;
         cursor: pointer;
-        box-shadow: 0 4px 10px rgba(80, 200, 120, 0.4);
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
         transition: background 0.3s ease, transform 0.2s ease;
       }
 
       .write-btn:hover {
-        background: #3eb565;
+        background: #1e7e34;
         transform: translateY(-2px);
       }
 
       .detail-btn {
         margin-top: 15px;
-        padding: 8px 16px;
-        background: #4a90e2;
+        padding: 10px 18px;
+        background: #007bff;
         color: white;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         float: right;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background 0.3s ease;
       }
 
       .detail-btn:hover {
-        background: #3b78c2;
-      }
-      .search-wrapper {
-        width: 700px;
-        margin: 15px auto;
-        display: flex;
-        gap: 10px;
+        background: #0056b3;
       }
 
-      #searchInput {
-        flex: 1;
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-      }
-
-      #searchBtn {
-        padding: 8px 15px;
-        border: none;
-        background: #007bff;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
+      /* 미디어 쿼리 - 작은 화면 대응 */
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 15px 20px;
+        }
+        .container,
+        .search-wrapper {
+          width: 95%; /* 더 넓게 사용 */
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .search-wrapper {
+          flex-direction: column; /* 세로 배열 */
+        }
+        #searchInput,
+        #searchBtn {
+          width: 100%; /* 너비 전체 사용 */
+          margin: 5px 0;
+        }
+        #searchBtn {
+          order: 2; /* 버튼이 타이틀, 텍스트 박스 아래에 위치 */
+        }
+        .post-title {
+          font-size: 18px;
+          padding-left: 10px;
+        }
+        .post-content {
+          font-size: 14px;
+        }
       }
     </style>
   </head>
@@ -161,7 +234,6 @@
           <a href="main.html">게시판</a>
           <a href="write.html">작성하기</a>
         </div>
-
         <div class="logout-btn" id="logoutBtn">로그아웃</div>
       </div>
     </header>
@@ -169,39 +241,11 @@
       <input type="text" id="searchInput" placeholder="제목 또는 작성자 검색" />
       <button id="searchBtn">검색</button>
     </div>
-    <div class="container" id="postList">
-      <div class="post">
-        <div class="post-title">📢 새 디자인 적용 예시 게시글</div>
-        <div class="post-content">
-          산뜻한 파란색 네비게이션과 부드러운 배경색을 적용했습니다. 게시글
-          박스에 미묘한 그림자를 넣어 입체감을 주었고, 마우스 오버 시 강조
-          효과가 나타납니다.
-        </div>
-      </div>
-      <div class="post">
-        <div class="post-title">디자인 개선 사항 요약</div>
-        <div class="post-content">
-          <ul>
-            <li>
-              **색상:** 네비게이션은 시원한 **블루** 계열, 버튼은 눈에 띄는
-              **그린** 계열로 변경했습니다.
-            </li>
-            <li>
-              **레이아웃:** 게시글 컨테이너 폭을 넓히고, 각 게시글에 경계선과
-              배경을 추가하여 구분했습니다.
-            </li>
-            <li>
-              **디테일:** 제목 왼쪽에 강조 라인을 넣고, 버튼은 둥글게
-              처리했습니다.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <div class="container" id="postList"></div>
 
     <div class="write-btn-wrapper">
       <button class="write-btn" onclick="location.href='write.html'">
-        📝 새 글 작성하기
+        새 글 작성하기
       </button>
     </div>
     <script>
